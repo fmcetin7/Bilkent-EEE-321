@@ -1,5 +1,8 @@
 function w = fmcconvo(u,v)
 
+% this function takes two vectors as input and returns their discrete
+% convolution based on a shifted multiplication algorithm
+
 m=length(u);
 n=length(v);
 
