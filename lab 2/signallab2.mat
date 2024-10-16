@@ -1,0 +1,31 @@
+syms n;
+x1(n) = piecewise((n>=0)&(n<=8),3, 0);
+x2(n) = piecewise((n>=0)&(n<5),3, (n>=5)&(n<9),-3, (n>=9)&(n<=13),-6, 0);
+x3(n) = piecewise((n>=2)&(n<=20),(exp(1i*n/3)), 0);
+x4(n) = piecewise((n>=2)&(n<=20),-3*(sin(n/3)), 0);
+x5(n) = piecewise((n>=2)&(n<=20),2*(cos(n/3)), 0);
+x6(n) = x1(n)+2i*x2(n);
+
+x_1 = nan(1,30);
+x_2 = nan(1,30);
+x_3 = nan(1,30);
+x_4 = nan(1,30);
+x_5 = nan(1,30);
+x_6 = nan(1,30);
+
+for m = 1:30
+    x_1(m)=x1(m);
+    x_2(m)=x2(m);
+    x_3(m)=x3(m);
+    x_4(m)=x4(m);
+    x_5(m)=x5(m);
+    x_6(m)=x6(m);
+end
+
+out1 = fmcconvo(x_1,impuls(30));
+out2 = fmcconvo(x_2,impuls(30));
+out3 = fmcconvo(x_3,impuls(30));
+out4 = fmcconvo(x_4,impuls(30));
+out5 = fmcconvo(x_5,impuls(30));
+out6 = fmcconvo(x_6,impuls(30));
+
