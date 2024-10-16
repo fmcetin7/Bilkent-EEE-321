@@ -1,4 +1,5 @@
-function y = impuls(length) ;
+function y = impuls(length)
+%this function takes the length as an input and gives the desired impulse response as output in a discrete fashion.
 syms n;
 h(n) = piecewise(n<0, 0, n>=0, (7/8)^n*(n-4));
 
