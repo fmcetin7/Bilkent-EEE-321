@@ -1,0 +1,42 @@
+anal1 = zeros(1,59);
+for m = 1:59
+    if (m<=13) & (m>=5)
+        for q=4:m-1
+            anal1(m)=((3*(7/8)^q)+anal1(m));
+        end
+    elseif m > 13
+        for q= ((m-9):(m-1))
+            anal1(m)=((3*(7/8)^q)+anal1(m));
+        end
+    end
+end
+
+
+
+anal2 = zeros(1,59);
+for m=1:59
+    if m>6
+        anal2(m)=anal1(m) - 2*anal1(m-5);
+    else
+        anal2(m)=anal1(m);
+    end
+end
+
+
+
+anal3= zeros(1,59);
+for m = 1:59
+    if (m<25) & (m>=7)
+        for q=4:m-3
+            anal3(m)=(((7/8)^q)*(exp(i/3*(m-q))))+anal3(m);
+        end
+    elseif m >= 25
+        for q= m-21:m-3
+            anal3(m)=(((7/8)^q)*(exp(i/3*(m-q))))+anal3(m);
+        end
+    end
+end
+
+anal4 = -3*imag(anal3);
+anal5 = 2*real(anal3);
+anal6 = anal1 + 2i*anal2;
