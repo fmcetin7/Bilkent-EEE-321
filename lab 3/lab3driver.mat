@@ -1,0 +1,9 @@
+[y,fs]=audioread('impuls.mp3');
+y=y(142694:end);
+[y2,fs2]=audioread('mozart.mp3');
+y2=y2(floor(length(y2)*10/227):floor(length(y2)*30/227));
+y22=y2*max(y)/max(y2);
+out=conv(y,y2); 
+opera=sound(out,fs);
+audiowrite('opera.mp3',out,fs);
+
