@@ -1,0 +1,44 @@
+[y,fs]=audioread('impuls.mp3');
+y=y(142694:end);
+
+[s1,fs1]=audioread('mozart_sopr_6.mp3');
+s1=s1(floor(length(s1)*10/227):floor(length(s1)*30/227));
+[s2,fs2]=audioread('mozart_vc_6.mp3');
+s2=s2(floor(length(s2)*10/227):floor(length(s2)*30/227));
+[s3,fs3]=audioread('mozart_vl1_6.mp3');
+s3=s3(floor(length(s3)*10/227):floor(length(s3)*30/227));
+[s4,fs4]=audioread('mozart_vl2_6.mp3');
+s4=s4(floor(length(s4)*10/227):floor(length(s4)*30/227));
+[s5,fs5]=audioread('mozart_vla_6.mp3');
+s5=s5(floor(length(s5)*10/227):floor(length(s5)*30/227));
+[s6,fs6]=audioread('mozart_bsn_5.mp3');
+s6=s6(floor(length(s6)*10/227):floor(length(s6)*30/227));
+[s7,fs7]=audioread('mozart_bsn_6.mp3');
+s7=s7(floor(length(s7)*10/227):floor(length(s7)*30/227));
+[s8,fs8]=audioread('mozart_cl_6.mp3');
+s8=s8(floor(length(s8)*10/227):floor(length(s8)*30/227));
+[s9,fs9]=audioread('mozart_corno1_6.mp3');
+s9=s9(floor(length(s9)*10/227):floor(length(s9)*30/227));
+[s10,fs10]=audioread('mozart_corno1_8.mp3');
+s10=s10(floor(length(s10)*10/227):floor(length(s10)*30/227));
+[s11,fs11]=audioread('mozart_corno2_6.mp3');
+s11=s11(floor(length(s11)*10/227):floor(length(s11)*30/227));
+[s12,fs12]=audioread('mozart_corno2_8.mp3');
+s12=s12(floor(length(s12)*10/227):floor(length(s12)*30/227));
+[s13,fs13]=audioread('mozart_fl_6.mp3');
+s13=s13(floor(length(s13)*10/227):floor(length(s13)*30/227));
+[s14,fs14]=audioread('mozart_kb_6.mp3');
+s14=s14(floor(length(s14)*10/227):floor(length(s14)*30/227));
+
+s = s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12+s13+s14;
+
+out=conv(y,s); 
+sound(out,fs);
+audiowrite('opera.mp3',out,fs);
+
+stem(y2,'Filled','.');
+xline(0);
+yline(0);
+xlabel('Bits');
+ylabel('Audio Data');
+title('Specific 20 seconds of Anechoic Music - mozart.mp3');
