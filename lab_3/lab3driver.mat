@@ -35,10 +35,3 @@ s = s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12+s13+s14;
 out=conv(y,s); 
 sound(out,fs);
 audiowrite('opera.mp3',out,fs);
-
-stem(y2,'Filled','.');
-xline(0);
-yline(0);
-xlabel('Bits');
-ylabel('Audio Data');
-title('Specific 20 seconds of Anechoic Music - mozart.mp3');
