@@ -1,0 +1,33 @@
+[y,fs]=audioread('impuls.mp3');
+y=y(142694:end);
+
+[s1,fs1]=audioread('mozart_sopr_6.mp3');
+[s2,fs2]=audioread('mozart_vc_6.mp3');
+[s3,fs3]=audioread('mozart_vl1_6.mp3');
+[s4,fs4]=audioread('mozart_vl2_6.mp3');
+[s5,fs5]=audioread('mozart_vla_6.mp3');
+[s6,fs6]=audioread('mozart_bsn_5.mp3');
+[s7,fs7]=audioread('mozart_bsn_6.mp3');
+[s8,fs8]=audioread('mozart_cl_6.mp3');
+[s9,fs9]=audioread('mozart_corno1_6.mp3');
+[s10,fs10]=audioread('mozart_corno1_8.mp3');
+[s11,fs11]=audioread('mozart_corno2_6.mp3');
+[s12,fs12]=audioread('mozart_corno2_8.mp3');
+[s13,fs13]=audioread('mozart_fl_6.mp3');
+[s14,fs14]=audioread('mozart_kb_6.mp3');
+
+s = s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12+s13+s14;
+s=s(floor(length(s)*10/227):floor(length(s)*30/227));
+s_amp = s * max(y) / max(s);
+
+out=conv(y,s); 
+%sound(out,fs);
+audiowrite('anechoic.mp3',s_amp,fs);
+audiowrite('opera.mp3',out,fs);
+
+stem(out,'Filled','.');
+xline(0);
+yline(0);
+xlabel('Bits');
+ylabel('Audio Data');
+title('20 Seconds of ODEON Response to the Anechoic Music');
