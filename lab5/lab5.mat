@@ -6,7 +6,7 @@
 zeros = nan(1,19);
 zeros(1)= pi/40;
 for i = 1:9
-    zeros(i+1) = pi/6 + 5*pi/6*i/9;
+    zeros(i+1) = pi/8 + 7*pi/8*i/9;
     zeros(20-i)= -1*zeros(i);
 end
 
