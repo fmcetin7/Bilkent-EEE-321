@@ -1,7 +1,7 @@
 % ID: 22201689
 % N1=8, N2=6, M1=10, M2=8
 % L = 11 + N1 = 19
-% Cutoff Freqs: pi/10 and pi/6
+% Cutoff Freqs: pi/10 and pi/8
 
 zeros = nan(1,19);
 zeros(1)= pi/40;
