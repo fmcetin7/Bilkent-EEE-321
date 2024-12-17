@@ -1,0 +1,165 @@
+% ID: 22201689
+% N1=6, N2=1, M1=8, M2=3
+% Order = 5 + N1 = 11
+% Cutoff Freqs: pi/8 and pi/3
+
+poles = nan(1,11);
+poles(11)=0;
+for i = 1:5
+    poles(i) = 5*pi/48 + 2*i*pi/48;
+    poles(11-i) = -1 * poles(i);
+end
+
+zeros = nan(1,11);
+zeros(11)=0;
+for i = 1:5
+    zeros(i) = pi/3 + 2*pi/3*i/6;
+    zeros(11-i) = -1 * zeros(i);
+end
+
+hpoles = nan(11,1);
+for i = 1:11
+    hpoles(i)=0.95*exp(1i*poles(i));
+end
+hpoles(11)=0;
+
+hzeros = nan(11,1);
+for i = 1:11
+    hzeros(i)=1*exp(1i*zeros(i));
+end
+
+syms z
+B=1;
+A=1;
+for n = 1:11
+    B= B*(z-hzeros(n));
+    A = A*(z-hpoles(n));
+end
+H(z)=B/A;
+
+w=-pi:0.01:pi;
+[bcoeff,acoeff]=zp2tf(hzeros,0.95*hpoles,1);
+N = 100; 
+impulse = [1, ones(1, N-1)-ones(1, N-1)];
+h = filter(bcoeff, acoeff, impulse);
+
+%zplane(hzeros,hpoles);title('Pole-Zero Plot of the Filter');
+
+% plot(w,abs(H(exp(1i*w))));xlabel('w [rad]');ylabel('|H(e^{jw})|');
+% yline(0);title('Magnitude of H(e^{jw})');
+
+%plot(w,angle(H(exp(1i*w)))); xlabel('rad'); ylabel('∠H(e^{jw})');
+% yline(0);title('Phase of H(e^{jw})');
+
+%stem(0:N-1, h, '.');xlabel('n');ylabel('h[n]');yline(0);
+%title('A Portion of the Impulse Response of the IIR Filter');
+
+%PART2
+syms t
+xa (t)=cos(1000*t^2);
+n1=0:1023;
+n2=0:8191;
+x11=xa(n1*sqrt(pi/(1000*512)));
+x22=xa(n2*sqrt(pi/(1000*8192)));
+x1=nan(1,length(x11));
+x2=nan(1,length(x22));
+for i = 1:1024
+    x1(i) = eval(x11(i));
+end
+for i = 1:8192
+    x2(i) = eval(x22(i));
+end
+%stem(n1,x1,'.');title('Plot of x_1[n]');yline(0);xlabel('n');ylabel('x_1[n]');
+%stem(n2,x2,'.');title('Plot of x_2[n]');yline(0);xlabel('n');ylabel('x_2[n]');
+
+
+%PART3
+N = length(bcoeff); % Number of numerator coefficients (b)
+M = length(acoeff); % Number of denominator coefficients (a)
+L = length(x1);      % Length of input signal
+y1 = ones(1, L)-ones(1,L);   % Preallocate output signal
+for i = 1:L
+    % Initialize with numerator (input contribution)
+    y1(i) = bcoeff(1) * x1(i); 
+    % Contribution from past inputs (numerator coefficients)
+    for k = 2:N
+        if i - k + 1 > 0
+            y1(i) = y1(i) + bcoeff(k) * x1(i - k + 1);
+        end
+    end 
+    % Contribution from past outputs (denominator coefficients)
+    for k = 2:M
+        if i - k + 1 > 0
+            y1(i) = y1(i) - acoeff(k) * y1(i - k + 1);
+        end
+    end
+end
+
+N = length(bcoeff); % Number of numerator coefficients (b)
+M = length(acoeff); % Number of denominator coefficients (a)
+L = length(x2);      % Length of input signal
+y2 = ones(1, L)-ones(1,L);   % Preallocate output signal
+for i = 1:L
+    % Initialize with numerator (input contribution)
+    y2(i) = bcoeff(1) * x2(i); 
+    % Contribution from past inputs (numerator coefficients)
+    for k = 2:N
+        if i - k + 1 > 0
+            y2(i) = y2(i) + bcoeff(k) * x2(i - k + 1);
+        end
+    end 
+    % Contribution from past outputs (denominator coefficients)
+    for k = 2:M
+        if i - k + 1 > 0
+            y2(i) = y2(i) - acoeff(k) * y2(i - k + 1);
+        end
+    end
+end
+%stem(0:1023,y1,'.');title('Filtered T[x_1[n]]');yline(0); xlabel('n');
+%ylabel('y_1[n]');
+%stem(0:8191,y2,'.');title('Filtered T[x_2[n]]');yline(0); xlabel('n');
+%ylabel('y_2[n]');  
+
+%Part5
+m=1000;
+Ts=sqrt(pi/(m*length(x2)));
+rate=1/Ts;
+played=audioplayer((x2),rate);
+pauselength = Ts.*length(x2);
+%for j =1:3
+%   play(played);
+%    pause(pauselength);
+%    stop(played);
+%end
+
+%Part6
+m=1000;
+Ts=sqrt(pi/(m*length(y2)));
+rate=1/Ts;
+played=audioplayer((y2),rate);
+pauselength = Ts.*length(y2);
+%for j =1:3
+%   play(played);
+%    pause(pauselength);
+%    stop(played);
+%end
+
+
+%Part7
+w = -pi:0.01:pi;
+%plot(w,abs(H(exp(1i*w))));xlabel('w [rad]');ylabel('|H(e^{jw})|');
+% yline(0);title('Magnitude of H(e^{jw})');
+
+%Part8
+[ronaldo,fs1]=audioread('Ronaldo.mp3');
+ronaldo = ronaldo(:,1);
+%sound(ronaldo,fs1);
+filtron = conv(h, ronaldo);
+%sound(filtron,fs1);
+
+%Part 9
+[fatih,fs2]=audioread('fatih.mp3');
+%sound(fatih,fs2);
+filterfatih = conv(h,fatih);
+%sound(filterfatih,fs2);
+audiowrite('filteredfatih.mp3',filterfatih,fs2);
